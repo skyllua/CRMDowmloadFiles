@@ -26,9 +26,9 @@ public class Runner {
     static List<String> requests = new ArrayList<>();
     static String downloadFolder = "C:/Users/Starzhynskiy/Downloads/";
     static File dataFile;
-    static String domain;
-    static String login;
-    static String password;
+    static String domain = "UKC";
+    static String login = "admin";
+    static String password = "<thtptym14";
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
