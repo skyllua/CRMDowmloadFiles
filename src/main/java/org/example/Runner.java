@@ -26,6 +26,9 @@ public class Runner {
     static List<String> requests = new ArrayList<>();
     static String downloadFolder = "C:/Users/Starzhynskiy/Downloads/";
     static File dataFile;
+    static String domain;
+    static String login;
+    static String password;
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -107,6 +110,10 @@ public class Runner {
         try {
             fis = new FileInputStream("config.properties");
             property.load(fis);
+
+            domain = property.getProperty("domain");
+            login = property.getProperty("login");
+            password = property.getProperty("password");
 
             downloadFolder = property.getProperty("downpath");
             String file = property.getProperty("datafile");
@@ -232,11 +239,11 @@ public class Runner {
 
         for (WebElement element : driver.findElementsByXPath("//input[@class='login-page__form-input']")) {
             switch (element.getAttribute("placeholder")) {
-                case "Домен...": element.sendKeys("UKC");
+                case "Домен...": element.sendKeys(domain);
                     break;
-                case "Ім’я користувача...": element.sendKeys("admin");
+                case "Ім’я користувача...": element.sendKeys(login);
                     break;
-                case "Пароль...": element.sendKeys("<thtptym14");
+                case "Пароль...": element.sendKeys(password);
                     break;
             }
         }
