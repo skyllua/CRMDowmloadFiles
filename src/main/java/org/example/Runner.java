@@ -111,7 +111,10 @@ public class Runner {
             downloadFolder = property.getProperty("downpath");
             String file = property.getProperty("datafile");
             dataFile = new File(file);
-            if (new File(downloadFolder).exists() && new File(file).exists()) return true;
+            if (new File(downloadFolder).exists() && dataFile.exists()) return true;
+            else {
+                System.out.println("ERROR: Path " + downloadFolder + " or " + dataFile.getAbsolutePath() + " isn't exist!");
+            }
         } catch (IOException e) {
             System.err.println("ERROR: config.properties isn't exist!");
         }
@@ -120,7 +123,6 @@ public class Runner {
     }
 
     private static void readDataFile() throws IOException {
-
         BufferedReader reader = new BufferedReader(
                 new InputStreamReader(
                         new FileInputStream(dataFile), "UTF8"));
@@ -216,7 +218,7 @@ public class Runner {
 
         files.clear();
         for (WebElement file : driver.findElementsByXPath("//div[@class='input-file']").get(1).findElements(By.className("kb-file-wrapper"))) {
-            files.add(file.findElement(By.tagName("a")).getText());
+            files.add(file.findElement(By.tagName("a")).getText().replaceAll("~", "_"));
             while (true) {
                 try {
                     file.findElement(By.tagName("a")).click();
@@ -229,7 +231,7 @@ public class Runner {
         while (true) {
             int countExistFiles = 0;
             for (String file : files) {
-                if (new File(downloadFolder + file).exists() || new File(downloadFolder + file.replaceAll("~", "_")).exists()) countExistFiles++;
+                if (new File(downloadFolder + file).exists()) countExistFiles++;
             }
             if (countExistFiles == files.size()) break;
         }
@@ -237,6 +239,8 @@ public class Runner {
     }
 
     private static void login() {
+        waitOnWebElement(By.xpath("//input[@class='login-page__form-input']"));
+
         for (WebElement element : driver.findElementsByXPath("//input[@class='login-page__form-input']")) {
             switch (element.getAttribute("placeholder")) {
                 case "Домен...": element.sendKeys("UKC");
@@ -248,9 +252,22 @@ public class Runner {
             }
         }
 
+        waitOnWebElement(By.xpath("//input[@class='login-page__form-submit']"));
+
         driver.findElementByXPath("//input[@class='login-page__form-submit']").click();
         driver.findElementByXPath("//button[@class='icon-menu-cross add-tab-button']").click();
         driver.findElementByXPath("//span[@class='new-tab-item-text']").click();
+    }
+
+    private static void waitOnWebElement(By by) {
+        while (true) {
+            try {
+                driver.findElement(by);
+                sleep(200);
+                break;
+            } catch (Exception e) {
+            }
+        }
     }
 
     private static void setSettings() {
