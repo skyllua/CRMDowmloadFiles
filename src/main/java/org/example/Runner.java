@@ -143,6 +143,7 @@ public class Runner {
             driver.executeScript("document.getElementsByClassName('input-file')[1].getElementsByClassName('kb-file-wrapper')[0].getElementsByTagName('i')[0].click();");
 
             //press button YES
+//            waitOnWebElement(By.className("modal-module__modalContent___24PZt"));
             while (true) {
                 try {
                     sleep(500);
@@ -156,13 +157,7 @@ public class Runner {
     }
 
     private static void inputReqNum(String req) {
-        while (true) {
-            try {
-                driver.findElementByClassName("searchPage-module__searchInput___1vL6Y");
-                break;
-            } catch (Exception e) {}
-        }
-        sleep(100);
+        waitOnWebElement(By.className("searchPage-module__searchInput___1vL6Y"));
 
         driver.findElementByClassName("searchPage-module__searchInput___1vL6Y").sendKeys(Keys.CONTROL + "a");
         driver.findElementByClassName("searchPage-module__searchInput___1vL6Y").sendKeys(Keys.DELETE);
@@ -171,14 +166,8 @@ public class Runner {
         sleep(300);
         driver.findElementByClassName("searchPage-module__searchInput___1vL6Y").sendKeys(Keys.RETURN);
         sleep(500);
-        while (true) {
-            try {
-                driver.findElement(By.xpath("//div[@title='" + req + "']"));
-                break;
-            } catch (Exception e) {
 
-            }
-        }
+        waitOnWebElement(By.xpath("//div[@title='" + req + "']"));
         sleep(1000);
 
         driver.findElementByXPath("//div[@title='" + req + "']").click();
